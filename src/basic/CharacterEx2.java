@@ -1,3 +1,5 @@
+package basic;
+
 public class CharacterEx2 {
     public static void main(String[] args) {
 

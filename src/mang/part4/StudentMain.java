@@ -2,7 +2,9 @@ package mang.part4;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ForkJoinPool;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class StudentMain {
     public static void main(String[] args) {
@@ -19,8 +21,21 @@ public class StudentMain {
                 .average()
                 .ifPresent(avg -> System.out.println(Math.round(avg * 10) / 10.0));
 
-
-        IntStream.range(1, 4).reduce(10, (a, b) -> Integer.sum(a, b));
+        Arrays.asList("a", "b", "c", "d", "e")
+                .parallelStream()
+                .filter(s -> {
+                    System.out.format("filter: %s [%s]\n", s, Thread.currentThread().getName());
+                    return true;
+                })
+                .map(s -> {
+                    System.out.format("map: %s [%s]\n", s, Thread.currentThread().getName());
+                    return s.toUpperCase();
+                })
+                .sorted((s1, s2) -> {
+                    System.out.format("sort: %s <> %s [%s]\n", s1, s2, Thread.currentThread().getName());
+                    return s1.compareTo(s2);
+                })
+                .forEach(s -> System.out.format("forEach: %s [%s]\n", s, Thread.currentThread().getName()));
 
     }
 }
